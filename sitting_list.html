@@ -1,0 +1,276 @@
+
+<!DOCTYPE html>
+<html lang="en">
+{% load i18n%}
+{% load static %}
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Progress Report</title>
+
+	<!-- Global stylesheets -->
+	<link href="https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900" rel="stylesheet" type="text/css">
+	<link href="{% static 'assets/css/icons/icomoon/styles.css' %}" rel="stylesheet" type="text/css">
+	<link href="{% static 'assets/css/bootstrap.css' %}" rel="stylesheet" type="text/css">
+	<link href="{% static 'assets/css/core.css' %}" rel="stylesheet" type="text/css">
+	<link href="{% static 'assets/css/components.css' %}" rel="stylesheet" type="text/css">
+	<link href="{% static 'assets/css/colors.css' %}" rel="stylesheet" type="text/css">
+	<!-- /global stylesheets -->
+
+	<!-- Core JS files -->
+	<script type="text/javascript" src="{% static 'op/assets/js/core/libraries/jquery.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'op/assets/js/core/libraries/bootstrap.min.js' %}"></script>
+	<!-- /core JS files -->
+
+	<!-- Theme JS files -->
+	<script type="text/javascript" src="{% static 'op/assets/js/plugins/ui/nicescroll.min.js' %}"></script>
+
+	<script type="text/javascript" src="{% static 'op/assets/js/core/app.js' %}"></script>
+	<script type="text/javascript" src="{% static 'op/assets/js/pages/layout_fixed_custom.js' %}"></script>
+
+	<script type="text/javascript" src="{% static 'op/assets/js/plugins/ui/ripple.min.js' %}"></script>
+    <script src="{% static 'html2pdf.bundle.min.js' %}"></script>
+
+
+</head>
+
+<body>
+
+	<!-- Main navbar -->
+	<div class="navbar navbar-inverse bg-indigo">
+
+
+		<div class="navbar-collapse collapse" id="navbar-mobile">
+			<ul class="nav navbar-nav">
+				<li><a class="sidebar-control sidebar-main-toggle hidden-xs"><i class="icon-paragraph-justify3"></i></a></li>
+
+
+			</ul>
+
+			<div class="navbar-right">
+				<p id="p1" class="navbar-text">Good Morning</p>
+				<p class="navbar-text"><span class="label bg-success-400">Online</span></p>
+
+
+			</div>
+		</div>
+	</div>
+	<!-- /main navbar -->
+
+
+	<!-- Page container -->
+	<div class="page-container">
+
+		<!-- Page content -->
+		<div class="page-content">
+
+			<!-- Main sidebar -->
+			<div class="sidebar sidebar-main sidebar-default">
+				<div class="sidebar-content">
+
+<!-- User menu -->
+					<div class="sidebar-user-material">
+						<div class="category-content">
+							<div class="sidebar-user-material-content">
+								<
+							</div>
+
+							<div class="sidebar-user-material-menu">
+								<a href="#user-nav" data-toggle="collapse"><span>
+                                    <p class="navbar-text" id="p1"></p></span>
+                                    <i class="caret"></i></a>
+							</div>
+						</div>
+
+						<div class="navigation-wrapper collapse" id="user-nav">
+							<ul class="navigation">
+								<li><a href="#"><i class="icon-user-plus"></i> <span>My profile</span></a></li>
+
+								<li class="divider"></li>
+								<li><a href="{% url 'logout' %}"><i class="icon-switch2"></i> <span>Logout</span></a></li>
+							</ul>
+						</div>
+					</div>
+					<!-- /user menu -->
+
+					<!-- Main navigation -->
+					<div class="sidebar-category sidebar-category-visible">
+						<div class="category-content no-padding">
+							<ul class="navigation navigation-main navigation-accordion">
+
+								<!-- Main -->
+								<li class="navigation-header"><span>Main</span> <i class="icon-menu" title="Main pages"></i></li>
+								<li><a href="{% url 'dashboard' %}"><i class="icon-home4"></i> <span>Dashboard</span></a></li>
+
+
+
+
+
+							</ul>
+						</div>
+					</div>
+					<!-- /main navigation -->
+
+				</div>
+			</div>
+			<!-- /main sidebar -->
+
+
+			<!-- Main content -->
+			<div class="content-wrapper">
+
+				<!-- Page header -->
+				<div class="page-header page-header-default">
+					<div class="page-header-content">
+						<div class="page-title">
+							<h4><i class="icon-stack-check"></i> <span class="text-semibold">Quiz</span> - Score book</h4>
+						</div>
+
+					</div>
+
+					<div class="breadcrumb-line">
+						<ul class="breadcrumb">
+							<li><a href="{% url 'dashboard' %}"><i class="icon-home2 position-left"></i> Home</a></li>
+							<li><a href="#">faculty</a></li>
+							<li class="{% url 'quiz_marking' %}">marking</li>
+						</ul>
+					</div>
+				</div>
+				<!-- /page header -->
+
+
+				<!-- Content area -->
+				<div class="content">
+
+
+
+
+
+					<!-- Contextual classes -->
+					<div class="panel panel-flat">
+						<div class="panel-heading">
+							<h5 class="panel-title"></h5>
+							<div class="heading-elements">
+								<ul class="icons-list">
+			                		<li><a data-action="collapse"></a></li>
+
+			                	</ul>
+		                	</div><button onclick="generatePDF()">Download as PDF</button>
+						</div>
+
+
+                    {% if sitting_list %}
+
+						<div id="invoice" class="table-responsive">
+							<table class="table">
+			                    <thead>
+			                        <tr>
+			                            <th>User</th>
+			                            <th>Quiz</th>
+			                            <th>Completed</th>
+			                            <th>Score</th>
+			                        </tr>
+			                    </thead>
+			                    <tbody>
+			                        <tr>
+                                        <form action="" method="GET">
+
+                                            <td><input type="text" class="form-control border-bottom-danger text-danger" placeholder="type student name...." name="user_filter"></td>
+                                            <td><input type="text" class="form-control border-bottom-danger text-danger" placeholder="type quiz name...." name="quiz_filter"></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td><button type="submit" class="btn btn-info btn-float btn-rounded legitRipple"><i class="icon-search4"></i></button>
+                                        </form>
+                                    </tr>
+			                        {% for sitting in sitting_list %}
+                                        {% if sitting.get_percent_correct < 30 %}
+                                        <tr class="danger">
+                                            <td>{{ sitting.user }}</td>
+                                            <td>{{ sitting.quiz }}</td>
+                                            <td>{{ sitting.end }}</td>
+                                            <td>{{ sitting.get_percent_correct }}</td>
+                                            <td>
+                                                <a href="{% url 'quiz_marking_detail' pk=sitting.id %}">
+                                                    {% trans "View details" %}
+                                                </a>
+                                        </tr>
+                                        {% endif %}{% endfor %}
+                                    {% for sitting in sitting_list %}
+                                        {% if sitting.get_percent_correct >= 30 %}
+                                            <tr class="success">
+                                                <td>{{ sitting.user }}</td>
+                                                <td>{{ sitting.quiz }}</td>
+                                                <td>{{ sitting.end }}</td>
+                                                <td>{{ sitting.get_percent_correct }}</td>
+                                                <td>
+                                                <a href="{% url 'quiz_marking_detail' pk=sitting.id %}">
+                                                    {% trans "View details" %}
+                                                </a>
+                                        </tr>
+                                        {% endif %}
+
+                                    {% endfor %}
+			                    </tbody>
+			                </table>
+                    {% else %}
+                        <p>{% trans "There are no matching quizzes" %}.</p>
+                    {% endif %}
+						</div>
+					</div>
+					<!-- /contextual classes -->
+
+
+
+
+					<!-- Footer -->
+					<div class="footer text-muted">
+						&copy; 2021. <a href="#">Adhyapna</a>
+					</div>
+					<!-- /footer -->
+
+				</div>
+				<!-- /content area -->
+
+			</div>
+			<!-- /main content -->
+
+		</div>
+		<!-- /page content -->
+
+	</div>
+	<!-- /page container -->
+<script>
+    var today = new Date()
+var curHr = today.getHours()
+
+if (curHr < 12) {
+  document.getElementById("p1").innerHTML = "Good morning";
+} else if (curHr < 18) {
+  document.getElementById("p1").innerHTML = "Good afternoon";
+} else {
+  document.getElementById("p1").innerHTML = "Good evening";
+}
+</script>
+<script>
+      function generatePDF() {
+        // Choose the element that our invoice is rendered in.
+        const element = document.getElementById("invoice");
+        // Choose the element and save the PDF for our user.
+        var opt = {
+            margin: [10, 0, 10, 0], //top, left, buttom, right,
+            filename: 'my_file.pdf',
+            html2canvas: {dpi: 192, scale: 2, letterRendering: true},
+            pagebreak: {mode: 'avoid-all'},
+            jsPDF: {unit: 'pt', format: 'a4', orientation: 'portrait'}
+        };
+        html2pdf()
+            .set(opt)
+          .from(element)
+          .save();
+      }
+    </script>
+
+</body>
+</html>
+
